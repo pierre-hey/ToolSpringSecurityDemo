@@ -5,71 +5,68 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration and Login System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:fragment="header">
-    <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/}">Registration and Login System</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+<nav th:fragment="header">
+    <div>
+        <a th:href="@{/}">Registration and Login System</a>
+        <button>
+            <span></span>
         </button>
     </div>
 </nav>
-<br />
-<br />
-<br />
-<div class="container">
-    <div class="row col-md-8 offset-md-2">
-        <div class="card">
-            <div th:if="${param.success}">
-                <div class="alert alert-info">You've successfully registered
-                    to our app!</div>
-            </div>
-            <div class="card-header">
-                <h2 class="text-center">Registration</h2>
-            </div>
-            <div class="card-body">
-                <form method="post" role="form" th:action="@{/register/save}" th:object="${user}">
 
-
-                    <div class="form-group mb-3">
-                        <label class="form-label">Login</label>
-                        <input class="form-control"
-                               id="login"
-                               name="login"
-                               placeholder="Enter login"
-                               th:field="*{login}"
-                               type="text"
-                        />
-                        <p th:errors="*{login}" class="text-danger"
-                           th:if="${#fields.hasErrors('login')}">
-                        </p>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label class="form-label">Password</label>
-                        <input class="form-control"
-                               id="password"
-                               name="password"
-                               placeholder="Enter password"
-                               th:field="*{password}"
-                               type="password"
-                        />
-                        <p th:errors="*{password}" class="text-danger"
-                           th:if="${#fields.hasErrors('password')}">
-                        </p>
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <button class="btn btn-primary" type="submit">Register</button>
-                        <span>Already registered? <a href="/" th:href="@{/login}">Login
-                             here</a></span>
-                    </div>
-                </form>
-            </div>
-        </div>
+<div>
+    <div th:if="${param.success}">
+        <div>You've successfully registered to our app!</div>
     </div>
+    <div>
+        <h2>Registration</h2>
+    </div>
+    <div>
+        <form method="post" role="form" th:action="@{/register/save}" th:object="${userDto}">
+
+            <div>
+                <label for="login">Login
+                    <input id="login" name="login" placeholder="Enter login" type="text"
+                           th:field="*{login}"
+                    />
+                </label>
+                <p th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></p>
+            </div>
+
+            <div>
+                <label>Password
+                    <input id="password" name="password" placeholder="Enter password" type="password"
+                           th:field="*{password}"
+                    />
+                </label>
+                <!--                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>-->
+                <p th:each="error : ${#fields.errors('password')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+
+            <div>
+                <label>Password
+                    <input id="matchingPassword" name="matchingPassword" placeholder="Enter password" type="password"
+                           th:field="*{matchingPassword}"
+                    />
+                </label>
+                <p th:each="error : ${#fields.errors('matchingPassword')}" th:text="${error}">Validation error</p>
+
+                <p th:each="error : ${#fields.errors('global')}" th:text="${error}">Validation error</p>-->
+            </div>
+
+            <div>
+                <button type="submit">Register</button>
+                <span>Already registered?
+                            <a href="/" th:href="@{/login}">Login here</a>
+                </span>
+            </div>
+        </form>
+    </div>
+
+
 </div>
 </body>
 </html>

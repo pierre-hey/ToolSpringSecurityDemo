@@ -1,6 +1,8 @@
 package fr.hey.toolspringsecuritydemo.dto;
 
-import jakarta.validation.constraints.NotEmpty;
+import fr.hey.toolspringsecuritydemo.validation.PasswordMatches;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,11 +12,19 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@PasswordMatches(message = "Les mots de passe ne correspondent pas")
 public class UserDto
 {
     private Long id;
-    @NotEmpty(message = "Login should not be empty")
+    @NotBlank(message = "Ne peut pas être vide")
     private String login;
-    @NotEmpty(message = "Password should not be empty")
+    @NotBlank(message = "Ne peut pas être vide")
     private String password;
+    @NotBlank(message = "Ne peut pas être vide")
+    private String matchingPassword;
+
+    @AssertTrue(message = "Values are invalid")
+    private boolean isValid() {
+        return password.equals(matchingPassword);
+    }
 }

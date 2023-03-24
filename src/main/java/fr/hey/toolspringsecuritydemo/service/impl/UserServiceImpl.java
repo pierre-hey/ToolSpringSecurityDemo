@@ -3,9 +3,11 @@ package fr.hey.toolspringsecuritydemo.service.impl;
 import fr.hey.toolspringsecuritydemo.dto.UserDto;
 import fr.hey.toolspringsecuritydemo.entity.Role;
 import fr.hey.toolspringsecuritydemo.entity.User;
+import fr.hey.toolspringsecuritydemo.exceptions.UserAlreadyExistException;
 import fr.hey.toolspringsecuritydemo.repository.RoleRepository;
 import fr.hey.toolspringsecuritydemo.repository.UserRepository;
 import fr.hey.toolspringsecuritydemo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +18,11 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
+    @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            RoleRepository roleRepository,
                            PasswordEncoder passwordEncoder) {
@@ -33,8 +36,12 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setLogin(userDto.getLogin());
 
-        //encrypt the password once we integrate spring security
-        //user.setPassword(userDto.getPassword());
+        if(loginExists(userDto.getLogin())){
+            throw new UserAlreadyExistException("Un utilisateur existe déjà avec ce login : "
+                    + userDto.getLogin());
+        }
+        
+        // Encrypter le mot de passe
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         Role role = roleRepository.findByName("ROLE_ADMIN");
         if(role == null){
@@ -44,9 +51,15 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    private boolean loginExists(String login) {
+
+        return findByLogin(login) != null;
+
+    }
+
     @Override
     public User findByLogin(String login) {
-        return userRepository.findByLogin(login);
+        return userRepository.findUserByLogin(login);
     }
 
     @Override
