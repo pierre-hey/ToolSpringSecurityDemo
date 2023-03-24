@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Registration and Login System</title>
+
+</head>
+<body>
+<nav>
+    <div>
+        <div>
+            <ul>
+                <li>
+                    <a th:href="@{/register}">Register</a>
+                </li>
+                <li>
+                    <a th:href="@{/logout}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div>
+    <div>
+        <h1> Registered Users </h1>
+        <h2>Connecté : </h2>
+        <h3 sec:authentication="name"></h3>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th>Login</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user: ${users}">
+            <td th:text="${user.getLogin}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
