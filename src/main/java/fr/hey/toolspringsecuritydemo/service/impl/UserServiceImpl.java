@@ -36,15 +36,15 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setLogin(userDto.getLogin());
 
-        if(loginExists(userDto.getLogin())){
+        if (loginExists(userDto.getLogin())) {
             throw new UserAlreadyExistException("Un utilisateur existe déjà avec ce login : "
                     + userDto.getLogin());
         }
-        
+
         // Encrypter le mot de passe
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         Role role = roleRepository.findByName("ROLE_ADMIN");
-        if(role == null){
+        if (role == null) {
             role = checkRoleExist();
         }
         user.setRoles(Arrays.asList(role));
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-    private UserDto convertEntityToDto(User user){
+    private UserDto convertEntityToDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setLogin(user.getLogin());
         return userDto;

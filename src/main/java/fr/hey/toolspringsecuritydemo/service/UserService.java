@@ -1,7 +1,5 @@
 package fr.hey.toolspringsecuritydemo.service;
 
-
-
 import fr.hey.toolspringsecuritydemo.dto.UserDto;
 import fr.hey.toolspringsecuritydemo.entity.User;
 
