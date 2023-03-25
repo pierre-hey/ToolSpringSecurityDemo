@@ -5,24 +5,12 @@
 >
 <head>
     <meta charset="UTF-8">
-    <title>Registration and Login System</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <title>Users</title>
 
 </head>
 <body>
-<nav>
-    <div>
-        <div>
-            <ul>
-                <li>
-                    <a th:href="@{/register}">Register</a>
-                </li>
-                <li>
-                    <a th:href="@{/logout}">Logout</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<header th:replace="~{fragments/header :: header}"></header>
 <div>
     <div>
         <h1> Registered Users </h1>
@@ -33,11 +21,13 @@
         <thead>
         <tr>
             <th>Login</th>
+            <th>Password</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="user: ${users}">
-            <td th:text="${user.getLogin}"></td>
+            <td th:text="${user.login}"></td>
+            <td th:text="${user.password}"></td>
         </tr>
         </tbody>
     </table>

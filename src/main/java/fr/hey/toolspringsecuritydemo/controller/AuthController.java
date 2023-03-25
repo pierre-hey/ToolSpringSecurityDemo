@@ -26,6 +26,8 @@ public class AuthController {
 
     @GetMapping("index")
     public String home(){
+        userService.mockCreateUserIfNotExists("user","ROLE_USER");
+        userService.mockCreateUserIfNotExists("admin","ROLE_ADMIN");
         return "index";
     }
 

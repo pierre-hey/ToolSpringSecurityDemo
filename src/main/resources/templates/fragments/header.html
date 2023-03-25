@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+
+<header th:fragments="header">
+    <nav>
+        <ul>
+            <li>
+                <a class="nav-h1" th:href="@{/}">
+                    <h2>
+                        Démo Spring Security
+                        <th:block sec:authorize="isAuthenticated()" sec:authentication="name"></th:block>
+                    </h2>
+                </a>
+            </li>
+            <li class="menu-deroulant">
+                <a>POC Config</a>
+                <ul class="sous-menu">
+                    <li><a th:href="@{/poc/all}">View for all</a></li>
+                    <li><a th:href="@{/poc/auth}">View for auth</a></li>
+                    <li><a th:href="@{/poc/admin}">View for admin</a></li>
+                    <li><a th:href="@{/poc/user}">View for user</a></li>
+                </ul>
+            </li>
+            <li class="menu-deroulant">
+                <a th:href="@{/users}" th:text="Users"></a>
+                <ul class="sous-menu">
+                    <li><a th:href="@{#}" th:text="TOUSDOUX"></a></li>
+                    <li><a th:href="@{#}" th:text="TOUSDOUX"></a></li>
+                    <li><a th:href="@{#}" th:text="TOUSDOUX"></a></li>
+                </ul>
+            </li>
+            <li><a sec:authorize="!isAuthenticated()" th:href="@{/login}">Connexion</a></li>
+            <li><a sec:authorize="!isAuthenticated()" th:href="@{/register}">Créer un compte</a></li>
+            <li><a sec:authorize="isAuthenticated()" th:href="@{/logout}">Déconnexion</a>
+            <li><a sec:authorize="isAuthenticated()" th:href="@{/static}" sec:authentication="name"></a></li>
+        </ul>
+    </nav>
+</header>
+
+</body>
+</html>

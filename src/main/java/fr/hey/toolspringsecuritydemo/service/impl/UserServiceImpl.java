@@ -10,8 +10,8 @@ import fr.hey.toolspringsecuritydemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,20 +41,18 @@ public class UserServiceImpl implements UserService {
                     + userDto.getLogin());
         }
 
-        // Encrypter le mot de passe
+        // Crypter le mot de passe
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         Role role = roleRepository.findByName("ROLE_ADMIN");
         if (role == null) {
             role = checkRoleExist();
         }
-        user.setRoles(Arrays.asList(role));
+        user.setRoles(List.of(role));
         userRepository.save(user);
     }
 
     private boolean loginExists(String login) {
-
         return findByLogin(login) != null;
-
     }
 
     @Override
@@ -65,8 +63,42 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> findAllUsers() {
         List<User> users = userRepository.findAll();
-        return users.stream().map((user) -> convertEntityToDto(user))
+        return users.stream().map(this::convertEntityToDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void mockCreateUserIfNotExists(String userInfo, String role) {
+
+        if (!loginExists(userInfo)) {
+            User user = new User();
+            user.setLogin(userInfo);
+            user.setPassword(passwordEncoder.encode(userInfo));
+            user.setRoles(List.of(mockCreateRoleIfNotExists(role)));
+            mockCreateUser(user);
+            System.out.println("####################");
+            System.out.printf("Création de l'utilisateur : %s%n", user);
+            System.out.println("####################");
+        } else {
+            System.out.println("L'utilisateur existe déjà");
+        }
+    }
+
+    private void mockCreateUser(User user) {
+        userRepository.save(user);
+    }
+
+    private Role mockCreateRoleIfNotExists(String roleName) {
+
+        Role role = roleRepository.findByName(roleName);
+
+        if (ObjectUtils.isEmpty(role)) {
+            Role roleAdded = new Role();
+            roleAdded.setName(roleName);
+
+            return roleAdded;
+        }
+        return role;
     }
 
     private UserDto convertEntityToDto(User user) {

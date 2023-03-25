@@ -4,24 +4,18 @@
 >
 <head>
     <meta charset="UTF-8">
-    <title>Registration and Login System</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <title>Register</title>
 </head>
 <body>
-<nav th:fragment="header">
-    <div>
-        <a th:href="@{/}">Registration and Login System</a>
-        <button>
-            <span></span>
-        </button>
-    </div>
-</nav>
+<header th:replace="~{fragments/header :: header}"></header>
 
 <div>
     <div th:if="${param.success}">
-        <div>You've successfully registered to our app!</div>
+        <div>Compte créé avec succès</div>
     </div>
     <div>
-        <h2>Registration</h2>
+        <h2>Créer un compte</h2>
     </div>
     <div>
         <form method="post" role="form" th:action="@{/register/save}" th:object="${userDto}">
@@ -54,19 +48,17 @@
                 </label>
                 <p th:each="error : ${#fields.errors('matchingPassword')}" th:text="${error}">Validation error</p>
 
-                <p th:each="error : ${#fields.errors('global')}" th:text="${error}">Validation error</p>-->
+                <p th:each="error : ${#fields.errors('global')}" th:text="${error}">Validation error</p>
             </div>
 
             <div>
-                <button type="submit">Register</button>
-                <span>Already registered?
-                            <a href="/" th:href="@{/login}">Login here</a>
+                <button type="submit">S'enregistrer</button>
+                <span>Vous avez déjà un compte ?
+                            <a href="/" th:href="@{/login}">Se connecter</a>
                 </span>
             </div>
         </form>
     </div>
-
-
 </div>
 </body>
 </html>

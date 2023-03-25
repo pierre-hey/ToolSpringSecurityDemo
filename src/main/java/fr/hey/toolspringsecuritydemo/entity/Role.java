@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Entity
 @Table(name = "roles")
 public class Role {
@@ -28,6 +30,7 @@ public class Role {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @ToString.Exclude
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
 }

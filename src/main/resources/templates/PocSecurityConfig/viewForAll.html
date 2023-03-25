@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/prism/1.22.0/themes/prism-tomorrow.min.css'>
+    <title>ViewForAll</title>
+
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<div class="container">
+
+    <main>
+        <h1>Page visible par tous les utilisateurs, connecté ou non</h1>
+        <p>SpringSecurity.java</p>
+        <pre>
+            <code class="language-javascript">
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        http
+                .authorizeHttpRequests((authorize) -> authorize
+                                // Autorise tout le monde à accéder à la lecture des ressources CSS, JS, img
+                                .requestMatchers("/css/**","/js/**","/img/**").permitAll()
+                                // Autorise tout le monde à accéder à la page d'index via les 2 urls
+                                .requestMatchers("/","/index").permitAll()
+                                // Autorise tout le monde à accéder à la page d'enregistrement
+                                .requestMatchers("/register/**").permitAll()
+                                // Autorise tout le monde
+                                .requestMatchers("/poc/all").permitAll()
+            //...
+            </code>
+        </pre>
+
+    </main>
+
+</div>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/prism.min.js'></script>
+<script src="./script.js"></script>
+</body>
+</html>
