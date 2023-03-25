@@ -24,10 +24,11 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @GetMapping("index")
+    @GetMapping({"index","/"})
     public String home(){
-        userService.mockCreateUserIfNotExists("user","ROLE_USER");
-        userService.mockCreateUserIfNotExists("admin","ROLE_ADMIN");
+        userService.mockCreateUserIfNotExists("user",List.of("ROLE_USER"));
+        userService.mockCreateUserIfNotExists("admin",List.of("ROLE_ADMIN"));
+        userService.mockCreateUserIfNotExists("pierre",List.of("ROLE_ADMIN", "ROLE_USER"));
         return "index";
     }
 

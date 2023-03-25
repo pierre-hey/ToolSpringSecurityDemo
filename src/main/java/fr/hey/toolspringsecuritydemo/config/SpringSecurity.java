@@ -10,10 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -37,9 +34,9 @@ public class SpringSecurity {
         http
                 .authorizeHttpRequests((authorize) -> authorize
                                 // Autorise tout le monde à accéder à la lecture des ressources CSS, JS, img
-                                .requestMatchers("/css/**","/js/**","/img/**").permitAll()
+                                .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
                                 // Autorise tout le monde à accéder à la page d'index via les 2 urls
-                                .requestMatchers("/","/index").permitAll()
+                                .requestMatchers("/", "/index").permitAll()
                                 // Autorise tout le monde à accéder à la page d'enregistrement
                                 .requestMatchers("/register/**").permitAll()
                                 // Autorise tout le monde
@@ -73,7 +70,7 @@ public class SpringSecurity {
                                 // le "userName" du "UserDetail" de Spring qui correspond
                                 // au champ discriminant de l'identification
                                 //.loginProcessingUrl("/login")
-                                .defaultSuccessUrl("/users")
+                                .defaultSuccessUrl("/index")
                                 .permitAll()
                 )
 

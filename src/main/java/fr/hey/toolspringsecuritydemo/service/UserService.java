@@ -12,6 +12,6 @@ public interface UserService {
 
     List<UserDto> findAllUsers();
 
-    void mockCreateUserIfNotExists(String userInfo, String roleUser);
+    void mockCreateUserIfNotExists(String userInfo, List<String> roleUser);
 
 }

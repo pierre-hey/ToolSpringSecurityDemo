@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,19 +69,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void mockCreateUserIfNotExists(String userInfo, String role) {
+    public void mockCreateUserIfNotExists(String userInfo, List<String> roles) {
 
         if (!loginExists(userInfo)) {
             User user = new User();
             user.setLogin(userInfo);
             user.setPassword(passwordEncoder.encode(userInfo));
-            user.setRoles(List.of(mockCreateRoleIfNotExists(role)));
+            user.setRoles(mockCreateRoleIfNotExists(roles));
             mockCreateUser(user);
             System.out.println("####################");
             System.out.printf("Création de l'utilisateur : %s%n", user);
             System.out.println("####################");
         } else {
+            System.out.println("####################");
             System.out.println("L'utilisateur existe déjà");
+            System.out.println("####################");
         }
     }
 
@@ -88,17 +91,34 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
-    private Role mockCreateRoleIfNotExists(String roleName) {
+    private List<Role> mockCreateRoleIfNotExists(List<String> rolesName) {
 
-        Role role = roleRepository.findByName(roleName);
+        List<Role> rolesList = new ArrayList<>();
+        rolesName.forEach(roleName -> {
+            Role role = roleRepository.findByName(roleName);
 
-        if (ObjectUtils.isEmpty(role)) {
-            Role roleAdded = new Role();
-            roleAdded.setName(roleName);
+            if (ObjectUtils.isEmpty(role)) {
+                Role roleAdded = new Role();
+                roleAdded.setName(roleName);
 
-            return roleAdded;
-        }
-        return role;
+                roleRepository.save(roleAdded);
+                rolesList.add(roleAdded);
+
+                System.out.println("####################");
+                System.out.printf("Création du rôle : %s%n", roleAdded);
+                System.out.println("####################");
+
+
+            } else {
+                System.out.println("####################");
+                System.out.printf("Le role existe déjà : %s%n", role);
+                System.out.println("####################");
+                rolesList.add(role);
+            }
+
+        });
+        return rolesList;
+
     }
 
     private UserDto convertEntityToDto(User user) {
